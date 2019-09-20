@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import withFirebaseAuth from 'react-with-firebase-auth'
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/auth';
-import firebaseConfig from '../firebaseConfig';
+import firebaseConfig from '../FirebaseConfig';
 import './LoginForm.css';
+import AppRouter from '../Router';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
@@ -31,19 +32,20 @@ class Login extends Component {
             <div className="App">
                 {
                     user
-                        ? <p className="LoginForm-header">Hello, {user.displayName === "" || user.displayName == null ? " user" : user.displayName}</p>
-                        : <p className="LoginForm-header">Welcome to 7notes <br></br> Please sign in.</p>
+                        ? <p className="LoginForm-header">Hola, {user.displayName === "" || user.displayName == null ? " user" : user.displayName}</p>
+                        : <p className="LoginForm-header">Bienvenid@ a 7notes <br></br> Por favor inicia sesion</p>
                 }
                 {
                     user
-                        ? <button style={styles.buttonStyle} onClick={signOut}>Sign out</button>
-                        : <button onClick={signInWithGoogle}>Sign in with Google</button> 
+                        ? <button className="Button-Style" onClick={signOut}>Sign out</button>
+                        : <button onClick={signInWithGoogle}>Continuar con Google</button>
 
                 }
                 {
                     user
-                        ? <button style={styles.buttonStyle} onClick={signOut}>Sign out</button>
-                        : <button onClick={signInWithFacebook}>Sign in with Facebook</button>
+
+                        ? <AppRouter/>
+                        : <button onClick={signInWithFacebook}>Continuar con Facebook</button>
                 }
                 {
                     user
@@ -74,17 +76,7 @@ const providers = {
     facebookProvider: new firebase.auth.FacebookAuthProvider(),
 };
 
-const styles = {
-    buttonStyle: {
-        backgroundColor: "red",
-        color: "white",
-        padding: 10,
-        margin: 8,
-        width: 100,
-        height: 32
 
-    }
-}
 
 export default withFirebaseAuth({
     providers,
