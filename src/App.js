@@ -16,13 +16,12 @@ function App() {
         <div>
           <FirebaseAuthProvider firebase={firebase} {...firebaseConfig}>
             {
-
             }
             <FirebaseAuthConsumer>
               {({ isSignedIn }) => {
 
                 return isSignedIn
-                  ? <AppRouter />
+                  ? <AppRouter /> 
                   : <LoginView />
               }}
             </FirebaseAuthConsumer>

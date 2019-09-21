@@ -14,9 +14,9 @@ class fileUpload extends Component {
 
     handleUpload(event) {
         const file = event.target.files[0];
-        const storageRef = firebaseConfig.storage().ref(`/Pictures/${file.name}`)
-        const task = storageRef.put(file);
-
+        //const storageRef = firebaseConfig.firebase.storage().ref(`/Pictures/${file.name}`)
+        //const task = storageRef.put(file);
+        const task = null
         task.on('state_changed', snapshot => {
             let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             this.setState({
@@ -37,7 +37,7 @@ class fileUpload extends Component {
             <div>
                 <progress value={this.state.uploadValue} max="100"></progress>
                 <br />
-                <input type="file" onChange={this.handleUpload} />
+                <input type="file" onChange={()=>this.handleUpload} />
                 <br />
                 <img width="320" src={this.state.picture} alt="" />
             </div>

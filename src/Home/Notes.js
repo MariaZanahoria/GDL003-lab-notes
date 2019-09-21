@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
-import db from '../FirestoreConfig';
+import firebase from '../FirebaseConfig';
 
 export default class AllNotes extends Component {
-
-    state = {
+constructor (props){
+super(props);
+    this.state = {
         notes: []
     }
-
+}
     componentDidMount() {
-        db.collection('Notes').onSnapshot((snapShots) => {
-            this.setState({
-                notes: snapShots.docs.map(doc => {
-                    return { id: doc.id, data: doc.data() }
+        firebase.db.collection('Notitas').get()
+        .then (querySnapshot => {
+              const note = querySnapshot.docs.map(doc => ({ id: doc.id, data: doc.data()}));
+                    this.setState({ notes:note })
                 })
-            })
-        }), error => {
-            console.log (error.messege)
-        }
     }
 
     onDelete = (index) => {

@@ -1,42 +1,66 @@
 import React, { Component } from 'react';
-// import fileUpload from './Pictures';
-import db from '../FirebaseConfig';
+import firebase from "firebase/app";
 
 
 export default class CreateNotes extends Component {
     state = {
-        inputValue:""
+        tittle: "",
+        contentValue: ""
     }
 
-    changeValue = (event) => {
+    changeTittle = (event) => {
         this.setState({
-            inputValue: event.target.value
+            tittle: event.target.value
+        })
+    }
+    changeContent = (event) => {
+        this.setState({
+            contentValue: event.target.value
         })
     }
 
     action = () => {
-        const { inputvalue } = this.state;
-        db.collection('Notes').add({
-            Notes: inputvalue
+        const { tittle } = this.state;
+        console.log(tittle)
+        const {contentValue} = this.state;
+        const user = firebase.auth().currentUser
+        const day = new Date().toLocaleDateString();
+        const hour = new Date().toLocaleTimeString();
+        const dates = day + " " + hour;
+        firebase.firestore().collection('Notes').add({
+            title: tittle,
+            notes: contentValue,
+            id: user.uid,
+            date: dates
         }).then(() => {
             console.log("Agregado")
         }).catch((error) => {
             console.log(error.message)
         })
     }
-    reder() {
-        const { inputValue } = this.state;
+    render() {
+        const { tittle } = this.state;
+        const { contentValue } = this.state; 
 
         return (
             <div>
                 <input
-                    placeholder="Agrega una nueva nota"
-                    value={inputValue}
-                    onChange={this.changeValue}
+                    placeholder="Agrega un titulo"
+                    value={tittle}
+                    onChange={this.changeTittle}
                 />
-                {/* <fileUpload/> */}
+            
+            <div>
+                <textarea
+                    placeholder="Escribe tu idea"
+                    value={contentValue}
+                    onChange={this.changeContent}
+                />
                 <div>
-                    <button onClick={this.action}>Agregar</button>
+                </div>
+                    <button
+                        onClick={this.action}
+                    >Agregar</button>
                 </div>
             </div>
         )
